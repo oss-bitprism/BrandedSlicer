@@ -156,25 +156,25 @@ jobs:
           dir "C:/Program Files (x86)/Windows Kits/10/Include"
           choco install nsis
 
-      #- name: Build slicer Win
-      #  if: inputs.os == 'windows-latest'
-      #  working-directory: ${{ github.workspace }}
-      #  env:
-      #    WindowsSdkDir: 'C:\Program Files (x86)\Windows Kits\10\'
-      #    WindowsSDKVersion: '10.0.22000.0\'
-      #  run: .\build_release_vs2022.bat slicer
+      - name: Build slicer Win
+        if: inputs.os == 'windows-latest'
+        working-directory: ${{ github.workspace }}
+        env:
+          WindowsSdkDir: 'C:\Program Files (x86)\Windows Kits\10\'
+          WindowsSDKVersion: '10.0.22000.0\'
+        run: .\build_release_vs2022.bat slicer
 
-      #- name: Create installer Win
-      #  if: inputs.os == 'windows-latest'
-      #  working-directory: ${{ github.workspace }}/build
-      #  run: |
-      #    cpack -G NSIS
+      - name: Create installer Win
+        if: inputs.os == 'windows-latest'
+        working-directory: ${{ github.workspace }}/build
+        run: |
+          cpack -G NSIS
 
-      #- name: Pack app
-      #  if: inputs.os == 'windows-latest'
-      #  working-directory: ${{ github.workspace }}/build
-      #  shell: cmd
-      #  run: '"C:/Program Files/7-Zip/7z.exe" a -tzip OrcaSlicer_Windows_${{ env.ver }}_portable.zip ${{ github.workspace }}/build/OrcaSlicer'
+      - name: Pack app
+        if: inputs.os == 'windows-latest'
+        working-directory: ${{ github.workspace }}/build
+        shell: cmd
+        run: '"C:/Program Files/7-Zip/7z.exe" a -tzip DremelSlicer_Windows_${{ env.ver }}_portable.zip ${{ github.workspace }}/build/DremelSlicer'
 
       #- name: Pack PDB
       #  if: inputs.os == 'windows-latest'
@@ -182,19 +182,19 @@ jobs:
       #  shell: cmd
       #  run: '"C:/Program Files/7-Zip/7z.exe" a -m0=lzma2 -mx9 Debug_PDB_${{ env.ver }}_for_developers_only.7z  *.pdb'
 
-      #- name: Upload artifacts Win zip
-      #  if: inputs.os == 'windows-latest'
-      #  uses: actions/upload-artifact@v4
-      #  with:
-      #    name: OrcaSlicer_Windows_${{ env.ver }}_portable
-      #    path: ${{ github.workspace }}/build/OrcaSlicer_Windows_${{ env.ver }}_portable.zip
+      - name: Upload artifacts Win zip
+        if: inputs.os == 'windows-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: DremelSlicer_Windows_${{ env.ver }}_portable
+          path: ${{ github.workspace }}/build/DremelSlicer_Windows_${{ env.ver }}_portable.zip
 
-      #- name: Upload artifacts Win installer
-      #  if: inputs.os == 'windows-latest'
-      #  uses: actions/upload-artifact@v4
-      #  with:
-      #    name: OrcaSlicer_Windows_${{ env.ver }}
-      #    path: ${{ github.workspace }}/build/OrcaSlicer*.exe
+      - name: Upload artifacts Win installer
+        if: inputs.os == 'windows-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: DremelSlicer_Windows_${{ env.ver }}
+          path: ${{ github.workspace }}/build/DremelSlicer*.exe
 
       #- name: Upload artifacts Win PDB
       #  if: inputs.os == 'windows-latest'
