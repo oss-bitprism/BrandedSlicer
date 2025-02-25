@@ -110,7 +110,7 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_BUILD_DIR="$PROJECT_DIR/build_$ARCH"
 DEPS_DIR="$PROJECT_DIR/deps"
 DEPS_BUILD_DIR="$DEPS_DIR/build_$ARCH"
-DEPS="$DEPS_BUILD_DIR/OrcaSlicer_dep_$ARCH"
+DEPS="$DEPS_BUILD_DIR/DremelSlicer_dep_$ARCH"
 
 # Fix for Multi-config generators
 if [ "$SLICER_CMAKE_GENERATOR" == "Xcode" ]; then
@@ -144,7 +144,7 @@ function pack_deps() {
         set -x
         mkdir -p "$DEPS"
         cd "$DEPS_BUILD_DIR"
-        tar -zcvf "OrcaSlicer_dep_mac_${ARCH}_$(date +"%Y%m%d").tar.gz" "OrcaSlicer_dep_$ARCH"
+        tar -zcvf "DremelSlicer_dep_mac_${ARCH}_$(date +"%Y%m%d").tar.gz" "DremelSlicer_dep_$ARCH"
     )
 }
 
@@ -159,7 +159,7 @@ function build_slicer() {
                 -G "${SLICER_CMAKE_GENERATOR}" \
                 -DBBL_RELEASE_TO_PUBLIC=1 \
                 -DCMAKE_PREFIX_PATH="$DEPS/usr/local" \
-                -DCMAKE_INSTALL_PREFIX="$PWD/OrcaSlicer" \
+                -DCMAKE_INSTALL_PREFIX="$PWD/DremelSlicer" \
                 -DCMAKE_BUILD_TYPE="$BUILD_CONFIG" \
                 -DCMAKE_MACOSX_RPATH=ON \
                 -DCMAKE_INSTALL_RPATH="${DEPS}/usr/local" \
@@ -179,18 +179,18 @@ function build_slicer() {
     echo "Fix macOS app package..."
     (
         cd "$PROJECT_BUILD_DIR"
-        mkdir -p OrcaSlicer
-        cd OrcaSlicer
+        mkdir -p DremelSlicer
+        cd DremelSlicer
         # remove previously built app
-        rm -rf ./OrcaSlicer.app
+        rm -rf ./DremelSlicer.app
         # fully copy newly built app
-        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/OrcaSlicer.app" ./OrcaSlicer.app
+        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/DremelSlicer.app" ./DremelSlicer.app
         # fix resources
-        resources_path=$(readlink ./OrcaSlicer.app/Contents/Resources)
-        rm ./OrcaSlicer.app/Contents/Resources
-        cp -R "$resources_path" ./OrcaSlicer.app/Contents/Resources
+        resources_path=$(readlink ./DremelSlicer.app/Contents/Resources)
+        rm ./DremelSlicer.app/Contents/Resources
+        cp -R "$resources_path" ./DremelSlicer.app/Contents/Resources
         # delete .DS_Store file
-        find ./OrcaSlicer.app/ -name '.DS_Store' -delete
+        find ./DremelSlicer.app/ -name '.DS_Store' -delete
     )
 
     # extract version
